@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增版本</title>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    <script>
+        function myFunction()
+            {
+                var dl;
+                dl = document.getElementById("downloadLink").value;
+                var strstart = dl.indexOf("http://");
+                if(strstart == -1){
+                    alert("请输入正确的URL链接!");
+                    return false;
+            }
+        }
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand">测试报告发送装置</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/task/edition_manage/">产品版本</a></li>
+                <li><a href="/task/task_manage/">测试任务</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">{{user}}</a></li>
+                <li><a href="/task/logout/">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div style="width:1440px;margin:0 auto">
+    <div class="page-header" style="padding-top: 55px;">
+        <div id="content" class="colM">
+        <div id="content-main">
+            <form class="navbar-form" action="/task/add_edit_button/{{ edition_list.id|default:0 }}/0/" method="post" onsubmit="return myFunction()">
+                <!--<input type="hidden" name="edition_id" value="{{ edition.id|default:0 }}"/>-->
+                <div class="form-row" style="height:40px">
+                    <label style="font-size:18px;width:78px;height:25px;" for="environment">版本环境:</label>
+            <!--<input style ="width:400px;height:34px;" value= '{{ edition_list.environment }}' class="form-control" id="environment" type="text" name="environment" placeholder="请输入版本环境" maxlength="20" autofocus required/>-->
+                    <select id="environment" name="environment" class="btn" style="border:1px solid #ccc;height:34px;padding:6px;">
+                    <!--<option value ="-1" style="font-size:15px;">请选择环境</option>-->
+                    {% if isList == '1' %}
+                        <option value ="测试环境" style="font-size:15px;">测试环境</option>
+                        <option value ="正式环境" style="font-size:15px;">正式环境</option>
+                        <option value ="开发环境" style="font-size:15px;">开发环境</option>
+                    {% else %}
+                        <option value ="{{ edition_list.environment }}" style="font-size:15px;">{{ edition_list.environment }}</option>
+                    {% endif %}
+                    </select>
+                </div>
+                <div class="form-row" style="height:40px">
+                    <label style="font-size: 18px;" for="select_pjname">所属项目:</label>
+                    <select style="width: 196px;height:34px;border-radius:4px;padding:6px" id="select_pjname" name="projectName">
+                    {% if isList == '1' %}
+                        {% for project_name in product_list %}
+                            {% if project_name.status == 1 %}
+                                <option style="font-size:16px;padding:6px;" value= '{{ project_name.product_name }}'>{{ project_name.product_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                    <option style="font-size:16px;padding:6px;" value= '{{ edition_list.projectName }}'>{{ edition_list.projectName }}</option>
+                    {% endif %}
+                    </select>
+                </div>
+        <div class="form-row" style="height:40px">
+            <label style="font-size:18px;width:78px;height:25px;" for="editionNum">当前版本:</label>
+            <input style ="width:300px;height:34px;" value= '{{ edition_list.editionNum }}' class="form-control" id="editionNum" type="text" name="editionNum" placeholder="请输入版本号" maxlength="50" autofocus required/>
+        </div>
+
+        <div class="form-row" style="height:40px">
+            <label style="font-size:18px;" for="downloadLink">下载链接:</label>
+            <input style ="width:603px;height:34px;" value= '{{ edition_list.downloadLink }}' class="form-control" id="downloadLink" type="text" name="downloadLink" placeholder="请输入下载链接" maxlength="100" autofocus required/>
+        </div>
+        <div class="form-row">
+            <label style="font-size:18px;width:78px;height:25px;" for="describe">发版说明:</label>
+            <textarea style='resize:none;' class="form-control" name='describe' id='describe' rows="10" cols="80" placeholder="请输入版本备注说明" required >{{ edition_list.describe }}</textarea>
+        </div>
+                {{ error }}<br>
+        <div class="submit-row" style="width:750px;height:50px;padding-top:15px;margin:0 auto;">
+            {% if isSub == '0' %}
+                <input class="btn btn-success" type="hidden" value="提交" />
+            {% else %}
+                <input style='width:80px' class="btn btn-success" type="submit" value="提交" />
+            {% endif %}
+        </div>
+                {% csrf_token %}
+    </form>
+        </div>
+        <br class="clear" />
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
