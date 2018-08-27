@@ -11,8 +11,4 @@ urlpatterns = [
     url(r'^task_manage/$', tv.task_manage, name='task_manage'),
     url(r'^add_task/(?P<edition_id>[0-9]+)/(?P<task_id>[0-9]+)/(?P<flag>[0-9]+)/$', tv.add_task, name='add_task'),
     url(r'^search_task/$', tv.search_task, name='search_task'),
-    # url(r'add_new/(?P<edition_id>[0-9]+)/$', tv.add_new, name='add_new'),
-    # url(r'search_eventname/$', tv.search_eventname, name='search_eventname'),
-    # url(r'search_guestname/$', tv.search_guestname, name='search_guestname'),
-    # url(r'^sign_index/(?P<event_id>[0-9]+)/$', tv.sign_index, name='sign_index'),
 ]
