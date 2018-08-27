@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from task import views as tv
-
+app_name = 'task'
 urlpatterns = [
     url(r'^login/$', tv.login, name='login'),
     url(r'^logout/$', tv.logout, name='logout'),
