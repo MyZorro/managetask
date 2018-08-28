@@ -16,17 +16,9 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             request.session['user'] = user.first_name
-            personid = Person.objects.filter(person_name=user.first_name)
-            if len(personid) == 0:
-                Person.objects.create(person_name=user.first_name, position=1, email='xxx@fkhwl.com', status=0)
-                persnid = Person.objects.filter(person_name=user.first_name)
-                request.session['person_id'] = persnid[0].id
-                response = HttpResponseRedirect('/task/edition_manage')
-                return response
-            else:
-                request.session['person_id'] = personid[0].id
-                response = HttpResponseRedirect('/task/edition_manage')
-                return response
+            request.session['user_id'] = user.id
+            response = HttpResponseRedirect('/task/edition_manage')
+            return response
         else:
             return render(request, 'task/login.html', {'error': '请输入正确的用户名和密码！'})
     else:
@@ -36,14 +28,15 @@ def login(request):
 @login_required
 def edition_manage(request):  # 项目列表
     username = request.session.get('user')
-    personid = request.session.get('person_id')
+    userid = request.session.get('user_id')
+    print(userid, username)
     edition_data = Edition.objects.filter(status__gt=0).order_by('-createTime')
     data = []
     for i in edition_data:
         edition_dict = {'projectName': i.projectName, 'editionNum': i.editionNum, 'environment': i.environment,
                         'createTime': i.createTime, 'status': i.status, 'downloadLink': i.downloadLink, 'id': i.id}
         data.append(edition_dict)
-    return render(request, 'task/edition_manage.html', {'user': username, 'personid': str(personid), 'edition_list': data})
+    return render(request, 'task/edition_manage.html', {'user': username, 'personid': str(userid), 'edition_list': data})
 
 
 @login_required

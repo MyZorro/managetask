@@ -28,11 +28,6 @@
     <div style="width:2000px;margin:0 auto">
     <div class="page-header" style="padding-top: 55px;">
         <div id="navbar_1" class="navbar-collapse collapse">
-            <!--<div style="float:left;width:3%;padding-top:8;">-->
-                <!--<a href="{% url 'add_edit_button' 0 0 %}">-->
-                    <!--<span class="btn btn-success">新增</span>-->
-                <!--</a>-->
-            <!--</div>-->
             <div style="float:left;width:97%">
                 <form class="navbar-form" method="post" action="/task/search_task/">
                 {% csrf_token %}
@@ -90,11 +85,11 @@
                     <a href="{{ task.downloadLink }}" target="_blank">{{ task.downloadLink }}</a>
                 </td>
                 <td>
-                    <a href="{% url 'add_task' task.edition_id task.id 0 %}">详情</a>
+                    <a href="{% url 'task:add_task' task.edition_id task.id 0 %}">详情</a>
                     {% if task.task_status == 3 or task.task_status == 0 %}
                         <a style="display:none">修改</a>
                     {% else %}
-                        <a href="{% url 'add_task' task.edition_id task.id 1 %}">修改</a>
+                        <a href="{% url 'task:add_task' task.edition_id task.id 1 %}">修改</a>
                     {% endif %}
                     {% if task.task_status == 0 or task.task_status == 2 %}
                         <a style="display:none">关闭</a>

@@ -1,34 +1,40 @@
+from django.conf import settings
 from django.db import models
 
 
 class Person(models.Model):
-    person_name = models.CharField(max_length=20, verbose_name='姓名')
-    position = models.IntegerField()
-    email = models.EmailField(verbose_name='邮箱')
-    create_time = models.DateTimeField(auto_now=True)
-    modify_time = models.DateTimeField(verbose_name='修改时间', null=True)
-    status = models.IntegerField(verbose_name='状态')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+    position = models.SmallIntegerField(null=True)
+    modify_time = models.DateField(verbose_name='修改时间', auto_now=True, null=True)
 
     def __str__(self):
-        return self.person_name
+        return self.user.first_name
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    """Create the UserProfile when a new User is saved"""
+    if created:
+        profile = Person()
+        profile.user = instance
+        profile.save()
 
 
 class Product(models.Model):
-    Product_name = models.CharField(default='', max_length=20, verbose_name='项目名称')
-    Product_describe = models.TextField(default='', max_length=300, verbose_name='项目描述')
-    status = models.IntegerField(verbose_name='状态')
+    Product_name = models.CharField(null=True, max_length=15, verbose_name='项目名称')
+    Product_describe = models.TextField(null=True, max_length=100, verbose_name='项目描述')
+    status = models.SmallIntegerField(verbose_name='状态')
 
     def __str__(self):
         return self.Product_name
 
 
 class Edition(models.Model):
-    projectName = models.CharField(max_length=30)
-    editionNum = models.CharField(max_length=50)
-    environment = models.CharField(max_length=20)
-    createTime = models.DateTimeField(auto_now=True)
-    status = models.IntegerField()
-    downloadLink = models.CharField(max_length=100)
+    projectName = models.CharField(max_length=20)
+    editionNum = models.CharField(max_length=20)
+    environment = models.CharField(max_length=8)
+    createTime = models.DateField(auto_now_add=True)
+    status = models.SmallIntegerField()
+    downloadLink = models.URLField(max_length=100)
     describe = models.TextField(max_length=200)
 
     def __str__(self):
@@ -36,22 +42,27 @@ class Edition(models.Model):
 
 
 class Task(models.Model):
-    edition = models.ForeignKey('Edition')
-    taskName = models.CharField(max_length=30)
-    createTime = models.DateTimeField(auto_now=True)
-    lastTime = models.DateTimeField(auto_now=True)
-    task_status = models.IntegerField(default=1)
+    edition = models.OneToOneField('Edition', on_delete=models.CASCADE)
+    taskName = models.CharField(max_length=20)
+    createTime = models.DateField(auto_now_add=True)
+    lastTime = models.DateField(auto_now=True)
+    task_status = models.SmallIntegerField(default=1)
     task_describe = models.TextField(max_length=300)
+    act_persons = models.ManyToManyField(
+        Person,
+        through='Actor',  # 自定义中间表
+        through_fields=('task', 'person'),
+    )
 
     def __str__(self):
         return self.taskName
 
 
 class Actor(models.Model):
-    task = models.ForeignKey('Task')
-    actorId = models.CharField(max_length=5)
-    act_status = models.IntegerField(default=0)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE)
+    person = models.ForeignKey('Person', on_delete=models.CASCADE, null=True)
+    act_status = models.SmallIntegerField(default=0)
     task_describe = models.TextField(max_length=200)
 
     def __str__(self):
-        return self.actorId
+        return self.person

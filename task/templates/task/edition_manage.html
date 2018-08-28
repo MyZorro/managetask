@@ -29,7 +29,7 @@
     <div class="page-header" style="padding-top: 55px;">
         <div id="navbar_1" class="navbar-collapse collapse">
             <div style="float:left;width:3%;padding-top:8;">
-                <a href="{% url 'add_edit_button' 0 0 %}">
+                <a href="{% url 'task:add_edit_button' 0 0 %}">
                     <span class="btn btn-success">新增</span>
                 </a>
             </div>
@@ -89,23 +89,23 @@
                     <a href="{{ edition.downloadLink }}" target="_blank">{{ edition.downloadLink }}</a>
                 </td>
                 <td>
-                    <a href="{% url 'add_edit_button' edition.id 0 %}">查看</a>
+                    <a href="{% url 'task:add_edit_button' edition.id 0 %}">查看</a>
                     {% if edition.status != 1 %}
                         <a style="display:none">修改</a>
                     {% else %}
-                        <a href="{% url 'add_edit_button' edition.id 1 %}">修改</a>
+                        <a href="{% url 'task:add_edit_button' edition.id 1 %}">修改</a>
                     {% endif %}
                     {% if edition.status == 2 %}
                         <a style="display:none">关闭</a>
                     {% elif edition.status == 0 %}
                         <a style="display:none">关闭</a>
                     {% else %}
-                        <a href="{% url 'delete_project' edition.id %}">关闭</a>
+                        <a href="{% url 'task:delete_project' edition.id %}">关闭</a>
                     {% endif %}
                     {% if edition.status != 1 %}
                         <a style="display:none">开始</a>
                     {% else %}
-                        <a href="{% url 'add_task' edition.id 0 0 %}">开始</a>
+                        <a href="{% url 'task:add_task' edition.id 0 0 %}">开始</a>
                     {% endif %}
                 </td>
             </tr>
