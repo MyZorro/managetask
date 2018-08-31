@@ -3,12 +3,19 @@ from django.db import models
 
 
 class Person(models.Model):
+    STATUS_CHOICES = (
+        ('1', '产品'),
+        ('2', 'UI'),
+        ('3', '开发'),
+        ('4', '测试'),
+        ('5', '其他'),
+    )
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-    position = models.SmallIntegerField(null=True)
+    position = models.CharField(max_length=3, choices=STATUS_CHOICES, default='4')
     modify_time = models.DateField(verbose_name='修改时间', auto_now=True, null=True)
 
     def __str__(self):
-        return self.user.first_name
+        return self.position
 
 
 def create_user_profile(sender, instance, created, **kwargs):

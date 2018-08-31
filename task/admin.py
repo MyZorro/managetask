@@ -27,7 +27,12 @@ class PersonInline(admin.StackedInline):
 class PersonAdmin(UserAdmin):
     """扩展哪些东西在用户表"""
     inlines = [PersonInline]
+    list_display = ['username', 'email', 'first_name', 'is_staff', 'get_position']
 
+    def get_position(self, positions):
+        ps = Person.objects.filter(user_id=positions)
+        return ps[0]
+    get_position.short_description = "职位"
 admin.site.unregister(User)
 admin.site.register(User, PersonAdmin)
 admin.site.register(Product, ProductAdmin)
