@@ -20,7 +20,7 @@
     <!-- Content -->
     <div id="content" class="colM">
         <div id="content-main">
-            <form action="/task/login/" method="post">
+            <form action="{% url 'task:login' %}" method="post">
                 <div class="form-row">
                     <label class="required" for="id_username">账号:</label>
                     <input type="text" name="username" placeholder="请输入用户名" maxlength="254" autofocus required id="id_username"/>
