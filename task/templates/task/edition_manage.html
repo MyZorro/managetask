@@ -93,7 +93,7 @@
                     {% if edition.status != 1 %}
                         <a style="display:none">修改</a>
                     {% else %}
-                        <a href="{%url 'task:add_edit_button' edition.id 1 %}">修改</a>
+                        <a href="{% url 'task:add_edit_button' edition.id 1 %}">修改</a>
                     {% endif %}
                     {% if edition.status == 2 %}
                         <a style="display:none">关闭</a>
