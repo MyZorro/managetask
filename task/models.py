@@ -11,7 +11,7 @@ class Person(models.Model):
         ('5', '其他'),
     )
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-    position = models.CharField(max_length=3, choices=STATUS_CHOICES, default='4')
+    position = models.CharField(max_length=3, choices=STATUS_CHOICES, verbose_name='职位')
     modify_time = models.DateField(verbose_name='修改时间', auto_now=True, null=True)
 
     def __str__(self):
@@ -27,12 +27,23 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 
 class Product(models.Model):
+    STATUS_CHOICES = (
+        ('1', '进行中'),
+        ('2', '已关闭'),
+    )
     Product_name = models.CharField(null=True, max_length=15, verbose_name='项目名称')
-    Product_describe = models.TextField(null=True, max_length=100, verbose_name='项目描述')
-    status = models.SmallIntegerField(verbose_name='状态')
+    Product_describe = models.TextField(null=True, max_length=300, verbose_name='任务描述')
+    status = models.CharField(max_length=4, verbose_name='状态', choices=STATUS_CHOICES)
+    create_time = models.DateField(verbose_name='创建时间', auto_now_add=True)
+    modify_time = models.DateTimeField(verbose_name='修改时间', auto_now=True, null=True)
 
     def __str__(self):
         return self.Product_name
+
+    class Meta:
+        ordering = ['-create_time']
+        verbose_name_plural = '计划列表'
+        verbose_name = '计划'
 
 
 class Edition(models.Model):
