@@ -61,7 +61,7 @@
                     <select style="width: 196px;height:34px;border-radius:4px;padding:6px" id="select_pjname" name="projectName">
                     {% if isList == '1' %}
                         {% for project_name in product_list %}
-                            {% if project_name.status == 1 %}
+                            {% if project_name.status == '1' %}
                                 <option style="font-size:16px;padding:6px;" value= '{{ project_name.product_name }}'>{{ project_name.product_name }}</option>
                             {% endif %}
                         {% endfor %}
