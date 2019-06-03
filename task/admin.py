@@ -12,9 +12,9 @@ from task.models import Person, Product
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['Product_name', 'Product_describe', 'status']
-    search_fields = ['Product_name']
-    list_filter = ['status']
+    list_display = ['Product_name', 'status', 'modify_time', 'create_time']
+    search_fields = ['Product_name', 'Product_describe']
+    list_filter = ['status', 'create_time']
 
 
 class PersonInline(admin.StackedInline):
@@ -31,7 +31,10 @@ class PersonAdmin(UserAdmin):
 
     def get_position(self, positions):
         ps = Person.objects.filter(user_id=positions)
-        return ps[0]
+        if ps.exists() is True:
+            return ps[0].get_position_display()
+        else:
+            return '暂未填写'
     get_position.short_description = "职位"
 admin.site.unregister(User)
 admin.site.register(User, PersonAdmin)
