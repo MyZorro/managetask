@@ -2,42 +2,41 @@
 <html lang="zh_Hans" >
 <head>
     <title>登录 | 任务管理</title>
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/login.css" />
-    <meta name="robots" content="NONE,NOARCHIVE" />
+    <link rel="stylesheet" type="text/css" href="/static/task/myCss/my.css" />
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <meta name="robots" content="NONE,NOARCHIVE" charset="utf-8"/>
+    <script src="/static/task/myjs/managetask.js"></script>
+    <script src="/static/task/myjs/layer-v3.1.1/layer/layer.js"></script>
 </head>
-<body class="login">
+<body>
 <!-- Container -->
-    <div id="container">
+    <div id="container" class="login">
     <!-- Header -->
     <div id="header">
         <div id="branding">
             <h1 id="site-name">
-                <a>任务管理</a>
+                <a>XX管理系统</a>
             </h1>
         </div>
     </div>
     <!-- Content -->
-    <div id="content" class="colM">
-        <div id="content-main">
-            <form action="{% url 'task:login' %}" method="post">
-                <div class="form-row">
-                    <label class="required" for="id_username">账号:</label>
-                    <input type="text" name="username" placeholder="请输入用户名" maxlength="254" autofocus required id="id_username"/>
-                </div>
-                <div class="form-row">
-                    <label class="required" for="id_password">密码:</label>
-                    <input type="password" name="password" placeholder="请输入密码" id="id_password" required/>
-                </div>
-                {{ error }}<br>
-                <div class="submit-row">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="登录" />
-                </div>
-                {% csrf_token %}
-            </form>
-        </div>
+    <div id="content">
+        <form>
+            {% csrf_token %}
+            <div class="top">
+                <span>账号:</span>
+                <input type="text" name="username" placeholder="请输入用户名" maxlength="254" autofocus required id="id_username"/>
+            </div>
+            <div class="top">
+                <span>密码:</span>
+                <input type="password" name="password" placeholder="请输入密码" id="id_password" required/>
+            </div>
+            <div class="top">
+                <input type="button" value="登录" onclick="loginPost();"/>
+            </div>
+        </form>
         <br class="clear" />
+        <div id="box1"></div>
     </div>
     <!-- END Content -->
     <div id="footer"></div>
