@@ -1,26 +1,29 @@
 # coding:utf-8
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from task.models import Edition, Product, Task, Person, Actor
 from django.db.models import Q
+import json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def login(request):
-    if request.method == "POST":
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
+    if request.is_ajax():
+        data = json.loads(request.body.decode("utf-8"))
+        username = data.get('username')
+        password = data.get('password')
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
             request.session['user'] = user.first_name
             request.session['user_id'] = user.id
-            response = HttpResponseRedirect('/task/edition_manage')
+            # response = HttpResponseRedirect('/task/edition_manage')
+            response = JsonResponse({"status": 1200, "message": "登录成功"})
             return response
         else:
-            return render(request, 'task/login.html', {'error': '请输入正确的用户名和密码！'})
+            return JsonResponse({"status": 1301, "message": "账户名或密码错误"})
     else:
         return render(request, 'task/login.html')
 
