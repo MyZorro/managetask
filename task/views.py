@@ -23,7 +23,7 @@ def login(request):
             response = JsonResponse({"status": 1200, "message": "登录成功"})
             return response
         else:
-            return JsonResponse({"status": 1301, "message": "账户名或密码错误"})
+            return JsonResponse({"status": 1300, "message": "账户名或密码错误"})
     else:
         return render(request, 'task/login.html')
 
